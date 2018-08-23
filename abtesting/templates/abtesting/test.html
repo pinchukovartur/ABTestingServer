@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+
+{% if result%}
+    <p>{{ result }}</p>
+{% endif %}
+
+<form id="testing_data" method="post" action="/save/" enctype="multipart/form-data">{% csrf_token %}
+
+    <label for="testing_name">Название теста:</label><br>
+    <input id="testing_name" type="text" name="testing_name" value="test name"/><br><br>
+
+    <label for="testing_probability">Вероятность:</label><br>
+    <input id="testing_probability" type="number" name="testing_probability" value="100"/><br><br>
+
+    <label for="testing_user_count">Кол-во пользователей учавствующих в тестировании:</label><br>
+    <input id="testing_user_count" type="number" name="testing_user_count" value="100"/><br><br>
+
+    {% for filter in filters %}
+
+        <label for="{{ filter.name }}">{{ filter.name }}</label><br>
+        <input id="{{ filter.name }}" type="text" name="{{ filter.name }}" value=""/>
+        <label for="{{ filter.name }}_type">Тип:</label>
+        <select id="{{ filter.name }}_type" name="{{ filter.name }}_type" form="testing_data">
+            <option value="<"><</option>
+            <option value=">">></option>
+            <option value="!=">!=</option>
+            <option value="==">==</option>
+        </select><br><br>
+
+    {% endfor %}
+
+    <br>
+    <label for="configs">Configs:</label><br>
+    <input id="configs" type="file" name="configs" multiple accept=".json,.csv">
+    <br>
+    <br>
+    <label for="configs">Levels:</label><br>
+    <input id="levels" type="file" name="levels" multiple accept=".json">
+    <br>
+    <br>
+    <button type="submit" onclick="return confirm('Are you sure?')">Сохранить</button>
+</form>
+</body>
+</html>
