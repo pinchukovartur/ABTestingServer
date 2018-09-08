@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+
+    <style>
+        table {
+            font-family: arial, sans-serif;
+            border-collapse: collapse;
+            width: 100%;
+        }
+
+        td, th {
+            border: 1px solid #dddddd;
+            text-align: left;
+            padding: 8px;
+        }
+
+        tr:nth-child(even) {
+            background-color: #dddddd;
+        }
+    </style>
+
+</head>
+<body>
+<h2>AB Tests Info</h2>
+{% if tests %}
+<table>
+    <tr>
+        <th>Current User Count</th>
+        <th>Filter</th>
+        <th>Test Name</th>
+        <th>Is On</th>
+        <th>User Count</th>
+        <th>Probability</th>
+        <th>Off</th>
+        <th>On</th>
+    </tr>
+    {% for key, value in tests.items %}
+    <tr>
+
+        <td>{{ value.current_user_count }}</td>
+        <td>{{ value.filter }}</td>
+        <td>{{ value.name }}</td>
+        <td>{{ value.isOn }}</td>
+        <td>{{ value.user_count }}</td>
+        <td>{{ value.probability }}</td>
+        <td><a href="/off_ab_test?ab_key={{ key}}">Off</a> </td>
+        <td><a href="/on_ab_test?ab_key={{ key}}">On</a> </td>
+    </tr>
+    {% endfor %}
+</table>
+{% endif %}
+
+</body>
+</html>

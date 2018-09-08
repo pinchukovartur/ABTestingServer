@@ -11,6 +11,7 @@
       Hi {{ user.username }}!
       <a href="{% url 'logout' %}">logout</a>
       <a href="{% url 'test' %}">Add test</a>
+      <a href="{% url 'ab_tests' %}">Show tests info</a>
     {% else %}
       <a href="{% url 'login' %}">login</a>
     {% endif %}
