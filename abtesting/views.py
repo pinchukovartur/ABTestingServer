@@ -74,8 +74,9 @@ def save_test(request):
     filters = Filter.objects.filter()
     for filter in filters:
         filter_data = request.POST[filter.name]
-        if not filter_data:
-            result += filter.name + " can't be null "
+
+        if not filter_data and filter.name + "_is_on" in request.POST.keys():
+            result += filter.name + " can't be null;\n"
 
     if result:
         return render(request, 'abtesting/test.html', {"filters": filters, 'result': result})
@@ -84,7 +85,11 @@ def save_test(request):
     for filter in filters:
         filter_value = request.POST[filter.name]
         filter_type = request.POST[filter.name + "_type"]
-        filters_dict[filter.name] = {"filter_value": filter_value, "filter_type": filter_type}
+        filter_data_type = request.POST[filter.name + "_data_type"]
+
+        if filter.name + "_is_on" in request.POST.keys():
+            filters_dict[filter.name] = {"filter_value": filter_value, "filter_type": filter_type,
+                                         "filter_data_type": filter_data_type}
 
     filters_json = json.dumps(filters_dict)
     data = {"name": testing_name, "probability": testing_probability,

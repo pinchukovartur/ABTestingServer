@@ -2,13 +2,12 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="57e08b20-a8a3-4ded-bf3e-28c32b571633" name="Default" comment="">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/abtesting/consts.py" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/abtesting/templates/abtesting/tests_info.html" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/db.sqlite3" afterPath="$PROJECT_DIR$/db.sqlite3" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/abtesting/templates/abtesting/base.html" afterPath="$PROJECT_DIR$/abtesting/templates/abtesting/base.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/abtesting/models.py" afterPath="$PROJECT_DIR$/abtesting/models.py" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/abtesting/templates/abtesting/test.html" afterPath="$PROJECT_DIR$/abtesting/templates/abtesting/test.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/abtesting/templates/abtesting/tests_info.html" afterPath="$PROJECT_DIR$/abtesting/templates/abtesting/tests_info.html" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/abtesting/views.py" afterPath="$PROJECT_DIR$/abtesting/views.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/mysite/urls.py" afterPath="$PROJECT_DIR$/mysite/urls.py" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="TRACKING_ENABLED" value="true" />
@@ -29,8 +28,8 @@
       <file leaf-file-name="models.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/abtesting/models.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="144">
-              <caret line="8" column="0" lean-forward="false" selection-start-line="8" selection-start-column="0" selection-end-line="8" selection-end-column="0" />
+            <state relative-caret-position="108">
+              <caret line="6" column="11" lean-forward="false" selection-start-line="6" selection-start-column="6" selection-end-line="6" selection-end-column="11" />
               <folding />
             </state>
           </provider>
@@ -39,9 +38,12 @@
       <file leaf-file-name="test.html" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/abtesting/templates/abtesting/test.html">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="504">
-              <caret line="28" column="94" lean-forward="false" selection-start-line="28" selection-start-column="94" selection-end-line="28" selection-end-column="94" />
-              <folding />
+            <state relative-caret-position="216">
+              <caret line="12" column="0" lean-forward="false" selection-start-line="12" selection-start-column="0" selection-end-line="12" selection-end-column="35" />
+              <folding>
+                <element signature="n#style#0;n#h1#0;n#body#0;n#html#0;n#!!top" expanded="true" />
+                <element signature="n#style#0;n#div#0;n#form#0;n#body#0;n#html#0;n#!!top" expanded="true" />
+              </folding>
             </state>
           </provider>
         </entry>
@@ -49,7 +51,7 @@
       <file leaf-file-name="urls.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/mysite/urls.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="270">
+            <state relative-caret-position="180">
               <caret line="15" column="21" lean-forward="false" selection-start-line="15" selection-start-column="11" selection-end-line="15" selection-end-column="21" />
               <folding>
                 <element signature="e#0#41#0" expanded="true" />
@@ -101,8 +103,8 @@
       <file leaf-file-name="views.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/abtesting/views.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="414">
-              <caret line="23" column="30" lean-forward="true" selection-start-line="23" selection-start-column="30" selection-end-line="23" selection-end-column="30" />
+            <state relative-caret-position="519">
+              <caret line="91" column="47" lean-forward="false" selection-start-line="91" selection-start-column="47" selection-end-line="91" selection-end-column="47" />
               <folding>
                 <element signature="e#0#45#0" expanded="true" />
               </folding>
@@ -110,21 +112,21 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="consts.py" pinned="false" current-in-tab="true">
+      <file leaf-file-name="consts.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/abtesting/consts.py">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="72">
-              <caret line="4" column="23" lean-forward="false" selection-start-line="4" selection-start-column="23" selection-end-line="4" selection-end-column="23" />
+              <caret line="4" column="25" lean-forward="false" selection-start-line="4" selection-start-column="25" selection-end-line="4" selection-end-column="25" />
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="tests_info.html" pinned="false" current-in-tab="false">
+      <file leaf-file-name="tests_info.html" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/abtesting/templates/abtesting/tests_info.html">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="335">
-              <caret line="25" column="6" lean-forward="true" selection-start-line="25" selection-start-column="6" selection-end-line="25" selection-end-column="6" />
+            <state relative-caret-position="540">
+              <caret line="39" column="9" lean-forward="true" selection-start-line="39" selection-start-column="9" selection-end-line="39" selection-end-column="9" />
               <folding />
             </state>
           </provider>
@@ -165,7 +167,6 @@
         <option value="$PROJECT_DIR$/testing_filter/models.py" />
         <option value="$PROJECT_DIR$/ab_testing/views.py" />
         <option value="$PROJECT_DIR$/abtesting/admin.py" />
-        <option value="$PROJECT_DIR$/abtesting/models.py" />
         <option value="$PROJECT_DIR$/abtesting/templates/index.html" />
         <option value="$PROJECT_DIR$/abtesting/templates/abtesting/index.html" />
         <option value="$PROJECT_DIR$/abtesting/urls.py" />
@@ -174,13 +175,14 @@
         <option value="$PROJECT_DIR$/abtesting/templates/abtesting/logged_out.html" />
         <option value="$PROJECT_DIR$/mysite/settings.py" />
         <option value="$PROJECT_DIR$/mysite/views.py" />
-        <option value="$PROJECT_DIR$/abtesting/templates/abtesting/test.html" />
         <option value="$PROJECT_DIR$/abtesting/templates/abtesting/base.html" />
         <option value="$PROJECT_DIR$/abtesting/templates/const.py" />
         <option value="$PROJECT_DIR$/mysite/urls.py" />
-        <option value="$PROJECT_DIR$/abtesting/templates/abtesting/tests_info.html" />
-        <option value="$PROJECT_DIR$/abtesting/views.py" />
         <option value="$PROJECT_DIR$/abtesting/consts.py" />
+        <option value="$PROJECT_DIR$/abtesting/models.py" />
+        <option value="$PROJECT_DIR$/abtesting/views.py" />
+        <option value="$PROJECT_DIR$/abtesting/templates/abtesting/test.html" />
+        <option value="$PROJECT_DIR$/abtesting/templates/abtesting/tests_info.html" />
       </list>
     </option>
   </component>
@@ -211,6 +213,7 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
+      <pane id="Scratches" />
       <pane id="ProjectPane">
         <subPane>
           <PATH>
@@ -276,7 +279,6 @@
         </subPane>
       </pane>
       <pane id="Scope" />
-      <pane id="Scratches" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -675,9 +677,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="54">
           <caret line="4" column="24" lean-forward="false" selection-start-line="4" selection-start-column="24" selection-end-line="4" selection-end-column="24" />
-          <folding>
-            <element signature="e#0#32#0" expanded="false" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -685,15 +684,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="90">
           <caret line="5" column="0" lean-forward="false" selection-start-line="5" selection-start-column="0" selection-end-line="5" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/abtesting/templates/abtesting/test.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="504">
-          <caret line="28" column="94" lean-forward="false" selection-start-line="28" selection-start-column="94" selection-end-line="28" selection-end-column="94" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -721,14 +711,7 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/abtesting/templates/const.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="0">
-          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
+    <entry file="file://$PROJECT_DIR$/abtesting/templates/const.py" />
     <entry file="file://$PROJECT_DIR$/abtesting/templates/abtesting/base.html">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="198">
@@ -739,7 +722,7 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/mysite/urls.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="270">
+        <state relative-caret-position="180">
           <caret line="15" column="21" lean-forward="false" selection-start-line="15" selection-start-column="11" selection-end-line="15" selection-end-column="21" />
           <folding>
             <element signature="e#0#41#0" expanded="true" />
@@ -747,36 +730,47 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/abtesting/templates/abtesting/tests_info.html">
+    <entry file="file://$PROJECT_DIR$/abtesting/consts.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="335">
-          <caret line="25" column="6" lean-forward="true" selection-start-line="25" selection-start-column="6" selection-end-line="25" selection-end-column="6" />
+        <state relative-caret-position="72">
+          <caret line="4" column="25" lean-forward="false" selection-start-line="4" selection-start-column="25" selection-end-line="4" selection-end-column="25" />
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/abtesting/models.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="144">
-          <caret line="8" column="0" lean-forward="false" selection-start-line="8" selection-start-column="0" selection-end-line="8" selection-end-column="0" />
+        <state relative-caret-position="108">
+          <caret line="6" column="11" lean-forward="false" selection-start-line="6" selection-start-column="6" selection-end-line="6" selection-end-column="11" />
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/abtesting/views.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="414">
-          <caret line="23" column="30" lean-forward="true" selection-start-line="23" selection-start-column="30" selection-end-line="23" selection-end-column="30" />
+        <state relative-caret-position="519">
+          <caret line="91" column="47" lean-forward="false" selection-start-line="91" selection-start-column="47" selection-end-line="91" selection-end-column="47" />
           <folding>
             <element signature="e#0#45#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/abtesting/consts.py">
+    <entry file="file://$PROJECT_DIR$/abtesting/templates/abtesting/test.html">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="72">
-          <caret line="4" column="23" lean-forward="false" selection-start-line="4" selection-start-column="23" selection-end-line="4" selection-end-column="23" />
+        <state relative-caret-position="216">
+          <caret line="12" column="0" lean-forward="false" selection-start-line="12" selection-start-column="0" selection-end-line="12" selection-end-column="35" />
+          <folding>
+            <element signature="n#style#0;n#h1#0;n#body#0;n#html#0;n#!!top" expanded="true" />
+            <element signature="n#style#0;n#div#0;n#form#0;n#body#0;n#html#0;n#!!top" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/abtesting/templates/abtesting/tests_info.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="540">
+          <caret line="39" column="9" lean-forward="true" selection-start-line="39" selection-start-column="9" selection-end-line="39" selection-end-column="9" />
           <folding />
         </state>
       </provider>

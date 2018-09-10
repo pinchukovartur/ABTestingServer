@@ -6,13 +6,15 @@
 </head>
 <body>
 
-{% if result%}
-    <p>{{ result }}</p>
+{% if result %}
+    <h1 style="color: red">{{ result }}</h1>
 {% endif %}
+
+<h2><a href="/"> < RETURN </a></h2>
 
 <form id="testing_data" method="post" action="/save/" enctype="multipart/form-data">{% csrf_token %}
 
-    <label for="testing_name">Название теста:</label><br>
+    <label for="testing_name">Название теста (for appmetrica):</label><br>
     <input id="testing_name" type="text" name="testing_name" value="test name"/><br><br>
 
     <label for="testing_probability">Вероятность:</label><br>
@@ -22,16 +24,41 @@
     <input id="testing_user_count" type="number" name="testing_user_count" value="100"/><br><br>
 
     {% for filter in filters %}
+        <div style="background-color: aliceblue">
 
-        <label for="{{ filter.name }}">{{ filter.name }}</label><br>
-        <input id="{{ filter.name }}" type="text" name="{{ filter.name }}" value=""/>
+        <label>
+            Is On:
+            <input type="checkbox" name="{{ filter.name }}_is_on" value="on"><br>
+        </label>
+
+
+        <label for="{{ filter.name }}">{{ filter.description }}</label><br>
+        {% if filter.type == "BOOL"%}
+             <select id="{{ filter.name }}" name="{{ filter.name }}" form="testing_data">
+                <option value="0">FLASE</option>
+                <option value="1">TRUE</option>
+            </select>
+        {% else %}
+            <input id="{{ filter.name }}" type="text" name="{{ filter.name }}" value=""/>
+        {% endif %}
+
+
         <label for="{{ filter.name }}_type">Тип:</label>
         <select id="{{ filter.name }}_type" name="{{ filter.name }}_type" form="testing_data">
-            <option value="<"><</option>
-            <option value=">">></option>
+            {% if filter.type == "INT" or filter.type == "FLOAT" %}
+                <option value="<"><</option>
+                <option value=">">></option>
+            {% endif %}
             <option value="!=">!=</option>
             <option value="==">==</option>
-        </select><br><br>
+        </select>
+
+
+        <input type="hidden" name="{{ filter.name }}_data_type" value="{{ filter.type }}">
+        <br>
+
+        </div>
+        <br><br>
 
     {% endfor %}
 
@@ -42,6 +69,7 @@
     <br>
     <label for="configs">Levels:</label><br>
     <input id="levels" type="file" name="levels" multiple accept=".json">
+
     <br>
     <br>
     <button type="submit" onclick="return confirm('Are you sure?')">Сохранить</button>
