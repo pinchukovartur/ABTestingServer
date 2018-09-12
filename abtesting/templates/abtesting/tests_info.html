@@ -49,8 +49,8 @@
         <td>{{ value.isOn }}</td>
         <td>{{ value.user_count }}</td>
         <td>{{ value.probability }}</td>
-        <td><a href="/off_ab_test?ab_key={{ key}}">Off</a> </td>
-        <td><a href="/on_ab_test?ab_key={{ key}}">On</a> </td>
+        <td><a href="/off_ab_test?ab_key={{ key}}&server={{ server }}">Off</a> </td>
+        <td><a href="/on_ab_test?ab_key={{ key}}&server={{ server }}">On</a> </td>
     </tr>
     {% endfor %}
 </table>

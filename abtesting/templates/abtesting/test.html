@@ -6,6 +6,10 @@
 </head>
 <body>
 
+<h1>
+    Current server: {{ server }}
+</h1>
+
 {% if result %}
     <h1 style="color: red">{{ result }}</h1>
 {% endif %}
@@ -55,6 +59,7 @@
 
 
         <input type="hidden" name="{{ filter.name }}_data_type" value="{{ filter.type }}">
+        <input type="hidden" name="server" value="{{ server }}">
         <br>
 
         </div>

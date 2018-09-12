@@ -1,48 +1,77 @@
 from django.shortcuts import render, redirect
 from abtesting.models import Filter
-from abtesting.consts import current_server
+from abtesting.consts import prod_server, dev_server
 
 import json
 import requests
 import time
 
 
-
 def test(request):
     if not request.user.is_authenticated():
         return redirect('/login')
 
+    server = request.GET["server"]
+    if not server:
+        return redirect('/')
+
     filters = Filter.objects.filter()
-    return render(request, 'abtesting/test.html', {"filters": filters})
+
+    return render(request, 'abtesting/test.html', {"filters": filters, "server": server})
 
 
 def ab_tests(request):
     if not request.user.is_authenticated():
         return redirect('/login')
 
+    server = request.GET["server"]
+    if not server:
+        return redirect('/')
+
+    if server == "prod":
+        current_server = prod_server
+    else:
+        current_server = dev_server
+
     r = requests.get(current_server + "get_ab_tests?key=6b7b1a88b2aa45eb9f861d9c86e67696")
     tests = json.loads(r.text)
-    return render(request, 'abtesting/tests_info.html', {"tests": tests})
+    return render(request, 'abtesting/tests_info.html', {"tests": tests, "server": server})
 
 
 def off_ab_test(request):
     if not request.user.is_authenticated():
         return redirect('/login')
 
+    server = request.GET["server"]
+    if not server:
+        return redirect('/')
+    if server == "prod":
+        current_server = prod_server
+    else:
+        current_server = dev_server
+
     ab_key = request.GET["ab_key"]
-    requests.get(current_server + "off_ab_test?key=6b7b1a88b2aa45eb9f861d9c86e67696&ab_id=" + ab_key)
+    r = requests.get(current_server + "off_ab_test?key=6b7b1a88b2aa45eb9f861d9c86e67696&ab_id=" + ab_key)
     time.sleep(1)
-    return redirect('ab_tests')
+    return redirect('/ab_tests?server='+server)
 
 
 def on_ab_test(request):
     if not request.user.is_authenticated():
         return redirect('/login')
 
+    server = request.GET["server"]
+    if not server:
+        return redirect('/')
+    if server == "prod":
+        current_server = prod_server
+    else:
+        current_server = dev_server
+
     ab_key = request.GET["ab_key"]
-    requests.get(current_server + "on_ab_test?key=6b7b1a88b2aa45eb9f861d9c86e67696&ab_id=" + ab_key)
+    r = requests.get(current_server + "on_ab_test?key=6b7b1a88b2aa45eb9f861d9c86e67696&ab_id=" + ab_key)
     time.sleep(1)
-    return redirect('ab_tests')
+    return redirect('/ab_tests?server=' + server)
 
 
 def save_test(request):
@@ -70,6 +99,10 @@ def save_test(request):
     testing_user_count = request.POST['testing_user_count']
     if not testing_user_count:
         result += "testing_user_count can't be null "
+
+    server = request.POST['server']
+    if not testing_user_count:
+        result += "server can't be null"
 
     filters = Filter.objects.filter()
     for filter in filters:
@@ -102,8 +135,11 @@ def save_test(request):
     for config in configs:
         files.append(("configs", config))
 
-    r = requests.post(current_server + "save_test?key=6b7b1a88b2aa45eb9f861d9c86e67696", files=files, data=data)
-    if not result:
+    if server == "prod":
+        r = requests.post(prod_server + "save_test?key=6b7b1a88b2aa45eb9f861d9c86e67696", files=files, data=data)
+        result = r.text
+    elif server == "dev":
+        r = requests.post(dev_server + "save_test?key=6b7b1a88b2aa45eb9f861d9c86e67696", files=files, data=data)
         result = r.text
 
-    return render(request, 'abtesting/test.html', {"filters": filters, 'result': result})
+    return render(request, 'abtesting/test.html', {"filters": filters, 'result': result, "server":server})

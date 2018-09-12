@@ -2,16 +2,21 @@
 <html>
 <head>
   <meta charset="utf-8">
-  <title>{% block title %}Django Simple Login{% endblock %}</title>
+  <title>{% block title %}AB Test Server{% endblock %}</title>
 </head>
 <body>
   <header>
-    <h1>Django Simple Server</h1>
+    <h1>AB Test Server</h1>
     {% if user.is_authenticated %}
       Hi {{ user.username }}!
-      <a href="{% url 'logout' %}">logout</a>
-      <a href="{% url 'test' %}">Add test</a>
-      <a href="{% url 'ab_tests' %}">Show tests info</a>
+      <a href="{% url 'logout' %}">logout</a><br><br>
+      <a href="{% url 'test' %}?server=dev">Add a test to the dev server</a><br>
+      <a href="{% url 'ab_tests' %}?server=dev">Show dev server tests</a>
+        <br>
+        <br>
+        <br>
+      <a href="{% url 'test' %}?server=prod">Add a test to the prod server</a><br>
+      <a href="{% url 'ab_tests' %}?server=prod">Show prod server tests</a>
     {% else %}
       <a href="{% url 'login' %}">login</a>
     {% endif %}
@@ -23,7 +28,7 @@
   </main>
   <hr>
   <footer>
-    Hello World! :)
+      unix converter - <a href="https://www.epochconverter.com/"> https://www.epochconverter.com/</a>
   </footer>
 </body>
 </html>
