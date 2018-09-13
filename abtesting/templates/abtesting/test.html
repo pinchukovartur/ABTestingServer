@@ -26,7 +26,12 @@
             {% endif %}
         {% endfor %}
     </script>
-
+    <style>
+        .bar {
+            height: 18px;
+            background: green;
+        }
+    </style>
 </head>
 <body>
 
@@ -68,7 +73,7 @@
                 </select>
             {% elif  filter.type == "DATE" %}
                 <input id="{{ filter.name }}" type="text" name="" value="" class="datepicker-here"
-                       data-timepicker="true"/>
+                       data-timepicker="true" autocomplete="off"/>
                 <input id="{{ filter.name }}_value_UNIX" type="hidden" name="{{ filter.name }}" value=""/>
             {% else %}
                 <input id="{{ filter.name }}" type="text" name="{{ filter.name }}" value=""/>
@@ -77,7 +82,7 @@
 
             <label for="{{ filter.name }}_type">Тип:</label>
             <select id="{{ filter.name }}_type" name="{{ filter.name }}_type" form="testing_data">
-                {% if filter.type == "INT" or filter.type == "FLOAT" %}
+                {% if filter.type == "INT" or filter.type == "FLOAT" or filter.type == "DATE"%}
                     <option value="<"><</option>
                     <option value=">">></option>
                 {% endif %}
@@ -106,10 +111,68 @@
     <br>
     <label for="configs">Levels:</label><br>
     <input id="levels" type="file" name="levels" multiple accept=".json">
+    <div id="fileformlabel"></div>
+
 
     <br>
     <br>
     <button type="submit" onclick="return confirm('Are you sure?')">Сохранить</button>
 </form>
+<script>
+
+    class DeleteAndLoadFiles {
+        constructor(fileUploadId, uploadedLabel) {
+            this.upload = document.getElementById(fileUploadId);
+            this.uploadedLabel = document.getElementById(uploadedLabel);
+            this.skipFiles = [];
+        }
+
+        static getFileNames() {
+            return Array.prototype.map.call(upload.files, function (file) {
+                return file.name;
+            });
+        }
+
+        showLoadFiles () {
+            const allFileNames = DeleteAndLoadFiles.getFileNames();
+            let loadFiles = [];
+            let html = '';
+
+            allFileNames.forEach()
+            for (let index in allFileNames) {
+                if (!this.skip_files.includes(allFileNames[index])) {
+                    loadFiles.push(allFileNames[index]);
+                    allFileNames[index] = allFileNames[index].replace(".", "").replace("#", "");
+                    html = html + "<a id=\"" + allFileNames[index] + "\" href=\"JavaScript:Clear(\'" + allFileNames[index] + "\')\" >Delete " + allFileNames[index] + "</a><br/>";
+                }
+            }
+            uploaded.innerHTML = html;
+        }
+
+{% comment %}    )
+        ;
+
+
+        function
+
+        Clear(id) {
+            var key = id.replace(".", "").replace("#", "");
+            console.log(key);
+            $("a#" + key).remove();
+            // skip_files.push(id);
+        }
+
+
+        function
+
+        ClearSkipList() {
+            var skip_files = [];
+        }{% endcomment %}
+
+    }
+
+</script>
+
+
 </body>
 </html>

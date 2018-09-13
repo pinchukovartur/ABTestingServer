@@ -29,6 +29,7 @@
 {% if tests %}
 <table>
     <tr>
+        <th>AB Key</th>
         <th>Current User Count</th>
         <th>Filter</th>
         <th>Files</th>
@@ -42,6 +43,7 @@
     {% for key, value in tests.items %}
     <tr>
 
+        <td>{{ key}}</td>
         <td>{{ value.current_user_count }}</td>
         <td>{{ value.filter }}</td>
         <td>{{ value.files }}</td>

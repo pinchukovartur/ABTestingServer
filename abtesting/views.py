@@ -142,5 +142,5 @@ def save_test(request):
     elif server == "dev":
         r = requests.post(dev_server + "save_test?key=6b7b1a88b2aa45eb9f861d9c86e67696", files=files, data=data)
         result = r.text
-    
+
     return render(request, 'abtesting/test.html', {"filters": filters, 'result': result, "server":server})
