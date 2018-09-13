@@ -6,6 +6,7 @@ FILTER_TYPE = (
     ('BOOL', 'BOOL'),
     ('FLOAT', 'FLOAT'),
     ('STRING', 'STRING'),
+    ('DATE', 'DATE'),
 )
 
 

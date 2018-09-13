@@ -121,6 +121,7 @@ def save_test(request):
         filter_data_type = request.POST[filter.name + "_data_type"]
 
         if filter.name + "_is_on" in request.POST.keys():
+            print(filter_value, filter_type, filter_data_type)
             filters_dict[filter.name] = {"filter_value": filter_value, "filter_type": filter_type,
                                          "filter_data_type": filter_data_type}
 
@@ -134,12 +135,12 @@ def save_test(request):
 
     for config in configs:
         files.append(("configs", config))
-
+    """
     if server == "prod":
         r = requests.post(prod_server + "save_test?key=6b7b1a88b2aa45eb9f861d9c86e67696", files=files, data=data)
         result = r.text
     elif server == "dev":
         r = requests.post(dev_server + "save_test?key=6b7b1a88b2aa45eb9f861d9c86e67696", files=files, data=data)
         result = r.text
-
+    """
     return render(request, 'abtesting/test.html', {"filters": filters, 'result': result, "server":server})

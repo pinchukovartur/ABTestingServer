@@ -2,7 +2,31 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>AB Testing</title>
+    {% load static %}
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.0/jquery.min.js"></script>
+    <script src="{% static 'calendar/dist/js/datepicker.min.js' %}"></script>
+
+    <link href="{% static 'calendar/dist/css/datepicker.min.css' %}" rel="stylesheet" type="text/css">
+
+    <script>
+        {% for filter in filters %}
+
+            {% if filter.type == "DATE" %}
+
+                $(document).ready(function () {
+                    $('#{{ filter.name }}').datepicker({
+                        onSelect: function (formattedDate, date, inst) {
+                            console.log(date.getTime() / 1000);
+                            $("#{{ filter.name }}_value_UNIX").val((date.getTime() / 1000));
+                        }
+                    })
+                });
+            {% endif %}
+        {% endfor %}
+    </script>
+
 </head>
 <body>
 
@@ -30,37 +54,45 @@
     {% for filter in filters %}
         <div style="background-color: aliceblue">
 
-        <label>
-            Is On:
-            <input type="checkbox" name="{{ filter.name }}_is_on" value="on"><br>
-        </label>
+            <label>
+                Is On:
+                <input type="checkbox" name="{{ filter.name }}_is_on" value="on"><br>
+            </label>
 
 
-        <label for="{{ filter.name }}">{{ filter.description }}</label><br>
-        {% if filter.type == "BOOL"%}
-             <select id="{{ filter.name }}" name="{{ filter.name }}" form="testing_data">
-                <option value="0">FLASE</option>
-                <option value="1">TRUE</option>
-            </select>
-        {% else %}
-            <input id="{{ filter.name }}" type="text" name="{{ filter.name }}" value=""/>
-        {% endif %}
-
-
-        <label for="{{ filter.name }}_type">Тип:</label>
-        <select id="{{ filter.name }}_type" name="{{ filter.name }}_type" form="testing_data">
-            {% if filter.type == "INT" or filter.type == "FLOAT" %}
-                <option value="<"><</option>
-                <option value=">">></option>
+            <label for="{{ filter.name }}">{{ filter.description }}</label><br>
+            {% if filter.type == "BOOL" %}
+                <select id="{{ filter.name }}" name="{{ filter.name }}" form="testing_data">
+                    <option value="0">FLASE</option>
+                    <option value="1">TRUE</option>
+                </select>
+            {% elif  filter.type == "DATE" %}
+                <input id="{{ filter.name }}" type="text" name="" value="" class="datepicker-here"
+                       data-timepicker="true"/>
+                <input id="{{ filter.name }}_value_UNIX" type="hidden" name="{{ filter.name }}" value=""/>
+            {% else %}
+                <input id="{{ filter.name }}" type="text" name="{{ filter.name }}" value=""/>
             {% endif %}
-            <option value="!=">!=</option>
-            <option value="==">==</option>
-        </select>
 
 
-        <input type="hidden" name="{{ filter.name }}_data_type" value="{{ filter.type }}">
-        <input type="hidden" name="server" value="{{ server }}">
-        <br>
+            <label for="{{ filter.name }}_type">Тип:</label>
+            <select id="{{ filter.name }}_type" name="{{ filter.name }}_type" form="testing_data">
+                {% if filter.type == "INT" or filter.type == "FLOAT" %}
+                    <option value="<"><</option>
+                    <option value=">">></option>
+                {% endif %}
+                <option value="!=">!=</option>
+                <option value="==">==</option>
+            </select>
+
+            {% if filter.type == "DATE" %}
+                <input type="hidden" name="{{ filter.name }}_data_type" value="INT">
+            {% else %}
+                <input type="hidden" name="{{ filter.name }}_data_type" value="{{ filter.type }}">
+            {% endif %}
+
+            <input type="hidden" name="server" value="{{ server }}">
+            <br>
 
         </div>
         <br><br>
