@@ -135,12 +135,12 @@ def save_test(request):
 
     for config in configs:
         files.append(("configs", config))
-    """
+
     if server == "prod":
         r = requests.post(prod_server + "save_test?key=6b7b1a88b2aa45eb9f861d9c86e67696", files=files, data=data)
         result = r.text
     elif server == "dev":
         r = requests.post(dev_server + "save_test?key=6b7b1a88b2aa45eb9f861d9c86e67696", files=files, data=data)
         result = r.text
-    """
+    
     return render(request, 'abtesting/test.html', {"filters": filters, 'result': result, "server":server})
