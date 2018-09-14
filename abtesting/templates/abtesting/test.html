@@ -82,7 +82,7 @@
 
             <label for="{{ filter.name }}_type">Тип:</label>
             <select id="{{ filter.name }}_type" name="{{ filter.name }}_type" form="testing_data">
-                {% if filter.type == "INT" or filter.type == "FLOAT" or filter.type == "DATE"%}
+                {% if filter.type == "INT" or filter.type == "FLOAT" or filter.type == "DATE" %}
                     <option value="<"><</option>
                     <option value=">">></option>
                 {% endif %}
@@ -96,7 +96,8 @@
                 <input type="hidden" name="{{ filter.name }}_data_type" value="{{ filter.type }}">
             {% endif %}
 
-            <input type="hidden" name="server" value="{{ server }}">
+
+
             <br>
 
         </div>
@@ -113,65 +114,67 @@
     <input id="levels" type="file" name="levels" multiple accept=".json">
     <div id="fileformlabel"></div>
 
+    <input type="hidden" name="server" value="{{ server }}">
+    {% comment %}<input class="skip_levels" type="hidden" name="skip_levels" value="">{% endcomment %}
 
     <br>
     <br>
     <button type="submit" onclick="return confirm('Are you sure?')">Сохранить</button>
 </form>
+{% comment %}
+
 <script>
 
-    class DeleteAndLoadFiles {
-        constructor(fileUploadId, uploadedLabel) {
-            this.upload = document.getElementById(fileUploadId);
-            this.uploadedLabel = document.getElementById(uploadedLabel);
-            this.skipFiles = [];
-        }
-
-        static getFileNames() {
-            return Array.prototype.map.call(upload.files, function (file) {
-                return file.name;
-            });
-        }
-
-        showLoadFiles () {
-            const allFileNames = DeleteAndLoadFiles.getFileNames();
-            let loadFiles = [];
-            let html = '';
-
-            allFileNames.forEach()
-            for (let index in allFileNames) {
-                if (!this.skip_files.includes(allFileNames[index])) {
-                    loadFiles.push(allFileNames[index]);
-                    allFileNames[index] = allFileNames[index].replace(".", "").replace("#", "");
-                    html = html + "<a id=\"" + allFileNames[index] + "\" href=\"JavaScript:Clear(\'" + allFileNames[index] + "\')\" >Delete " + allFileNames[index] + "</a><br/>";
-                }
-            }
-            uploaded.innerHTML = html;
-        }
-
-{% comment %}    )
-        ;
+    var upload = document.getElementById("levels");
+    var ploadedLabel = document.getElementById("fileformlabel");
+    var skipFiles = [];
 
 
-        function
-
-        Clear(id) {
-            var key = id.replace(".", "").replace("#", "");
-            console.log(key);
-            $("a#" + key).remove();
-            // skip_files.push(id);
-        }
-
-
-        function
-
-        ClearSkipList() {
-            var skip_files = [];
-        }{% endcomment %}
-
+    function getFileNames() {
+        return Array.prototype.map.call(upload.files, function (file) {
+            return file.name;
+        });
     }
 
+    function showLoadFiles() {
+        const allFileNames = getFileNames();
+        let loadFiles = [];
+        let html = '';
+
+        //allFileNames.forEach()
+        for (var index in allFileNames) {
+            if (!skipFiles.includes(allFileNames[index])) {
+                loadFiles.push(allFileNames[index]);
+                allFileNames[index] = allFileNames[index].replace(".", "").replace("#", "");
+                html = html + "<a id=\"" + allFileNames[index] + "\" href=\"JavaScript:Clear(\'" + allFileNames[index] + "\')\" >Delete " + allFileNames[index] + "</a><br/>";
+            }
+        }
+        ploadedLabel.innerHTML = html;
+
+        $(".skip_levels").value = skipFiles;
+    }
+
+    upload.addEventListener("change", showLoadFiles);
+
+
+    function Clear(id) {
+        var key = id.replace(".", "").replace("#", "");
+        $("a#" + key).remove();
+        skipFiles.push(id);
+
+        console.log(skipFiles);
+        //console.log(document.getElementById('skip_levels').value);
+
+        $('.skip_levels').attr(value, "default");
+
+
+        // document.getElementById('skip_levels').value='text to be displayed' ;
+    }
+    ;
+
+
 </script>
+{% endcomment %}
 
 
 </body>
