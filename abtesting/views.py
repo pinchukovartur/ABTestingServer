@@ -38,7 +38,7 @@ def ab_tests(request):
     return render(request, 'abtesting/tests_info.html', {"tests": tests, "server": server})
 
 
-def off_ab_test(request):
+def set_ab_status(request):
     if not request.user.is_authenticated():
         return redirect('/login')
 
@@ -51,25 +51,9 @@ def off_ab_test(request):
         current_server = dev_server
 
     ab_key = request.GET["ab_key"]
-    r = requests.get(current_server + "off_ab_test?key=6b7b1a88b2aa45eb9f861d9c86e67696&ab_id=" + ab_key)
-    time.sleep(1)
-    return redirect('/ab_tests?server='+server)
-
-
-def on_ab_test(request):
-    if not request.user.is_authenticated():
-        return redirect('/login')
-
-    server = request.GET["server"]
-    if not server:
-        return redirect('/')
-    if server == "prod":
-        current_server = prod_server
-    else:
-        current_server = dev_server
-
-    ab_key = request.GET["ab_key"]
-    r = requests.get(current_server + "on_ab_test?key=6b7b1a88b2aa45eb9f861d9c86e67696&ab_id=" + ab_key)
+    ab_status = request.GET["ab_status"]
+    r = requests.get(current_server + "set_ab_test_status?ab_status=" + ab_status +
+                     "&key=6b7b1a88b2aa45eb9f861d9c86e67696&ab_id=" + ab_key)
     time.sleep(1)
     return redirect('/ab_tests?server=' + server)
 
@@ -143,4 +127,4 @@ def save_test(request):
         r = requests.post(dev_server + "save_test?key=6b7b1a88b2aa45eb9f861d9c86e67696", files=files, data=data)
         result = r.text
 
-    return render(request, 'abtesting/test.html', {"filters": filters, 'result': result, "server":server})
+    return render(request, 'abtesting/test.html', {"filters": filters, 'result': result, "server": server})

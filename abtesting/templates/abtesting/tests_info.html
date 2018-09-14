@@ -34,11 +34,12 @@
         <th>Filter</th>
         <th>Files</th>
         <th>Test Name</th>
-        <th>Is On</th>
+        <th>Status</th>
         <th>User Count</th>
         <th>Probability</th>
         <th>Off</th>
         <th>On</th>
+        <th>Discard</th>
     </tr>
     {% for key, value in tests.items %}
     <tr>
@@ -48,11 +49,12 @@
         <td>{{ value.filter }}</td>
         <td>{{ value.files }}</td>
         <td>{{ value.name }}</td>
-        <td>{{ value.isOn }}</td>
+        <td>{{ value.status }}</td>
         <td>{{ value.user_count }}</td>
         <td>{{ value.probability }}</td>
-        <td><a href="/off_ab_test?ab_key={{ key}}&server={{ server }}">Off</a> </td>
-        <td><a href="/on_ab_test?ab_key={{ key}}&server={{ server }}">On</a> </td>
+        <td><a href="/set_ab_status?ab_status=OFF&ab_key={{ key}}&server={{ server }}" onclick="return confirm('Are you sure?')">Off</a> </td>
+        <td><a href="/set_ab_status?ab_status=ON&ab_key={{ key}}&server={{ server }}" onclick="return confirm('Are you sure?')">On</a> </td>
+        <td><a href="/set_ab_status?ab_status=DISCARD&ab_key={{ key}}&server={{ server }}" onclick="return confirm('Are you sure?')">DISCARD</a> </td>
     </tr>
     {% endfor %}
 </table>

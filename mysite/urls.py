@@ -13,8 +13,7 @@ urlpatterns = [
     url(r'^test$', views.test, name='test'),
     url(r'^save/$', views.save_test, name='save_test'),
     url(r'^ab_tests/$', views.ab_tests, name='ab_tests'),
-    url(r'^on_ab_test/$', views.on_ab_test, name='on_ab_test'),
-    url(r'^off_ab_test/$', views.off_ab_test, name='off_ab_test'),
+    url(r'^set_ab_status/$', views.set_ab_status, name='set_ab_status'),
 ]
 
 
