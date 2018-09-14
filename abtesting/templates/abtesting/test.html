@@ -1,3 +1,5 @@
+
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -115,67 +117,15 @@
     <div id="fileformlabel"></div>
 
     <input type="hidden" name="server" value="{{ server }}">
-    {% comment %}<input class="skip_levels" type="hidden" name="skip_levels" value="">{% endcomment %}
 
     <br>
     <br>
     <button type="submit" onclick="return confirm('Are you sure?')">Сохранить</button>
+
+
 </form>
-{% comment %}
+{% block content %}
 
-<script>
-
-    var upload = document.getElementById("levels");
-    var ploadedLabel = document.getElementById("fileformlabel");
-    var skipFiles = [];
-
-
-    function getFileNames() {
-        return Array.prototype.map.call(upload.files, function (file) {
-            return file.name;
-        });
-    }
-
-    function showLoadFiles() {
-        const allFileNames = getFileNames();
-        let loadFiles = [];
-        let html = '';
-
-        //allFileNames.forEach()
-        for (var index in allFileNames) {
-            if (!skipFiles.includes(allFileNames[index])) {
-                loadFiles.push(allFileNames[index]);
-                allFileNames[index] = allFileNames[index].replace(".", "").replace("#", "");
-                html = html + "<a id=\"" + allFileNames[index] + "\" href=\"JavaScript:Clear(\'" + allFileNames[index] + "\')\" >Delete " + allFileNames[index] + "</a><br/>";
-            }
-        }
-        ploadedLabel.innerHTML = html;
-
-        $(".skip_levels").value = skipFiles;
-    }
-
-    upload.addEventListener("change", showLoadFiles);
-
-
-    function Clear(id) {
-        var key = id.replace(".", "").replace("#", "");
-        $("a#" + key).remove();
-        skipFiles.push(id);
-
-        console.log(skipFiles);
-        //console.log(document.getElementById('skip_levels').value);
-
-        $('.skip_levels').attr(value, "default");
-
-
-        // document.getElementById('skip_levels').value='text to be displayed' ;
-    }
-    ;
-
-
-</script>
-{% endcomment %}
-
-
+{% endblock %}
 </body>
 </html>

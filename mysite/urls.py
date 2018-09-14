@@ -14,6 +14,7 @@ urlpatterns = [
     url(r'^save/$', views.save_test, name='save_test'),
     url(r'^ab_tests/$', views.ab_tests, name='ab_tests'),
     url(r'^set_ab_status/$', views.set_ab_status, name='set_ab_status'),
+    url(r'^save_file/$', views.save_file, name='save_file'),
 ]
 
 

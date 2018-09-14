@@ -5,6 +5,9 @@ from abtesting.consts import prod_server, dev_server
 import json
 import requests
 import time
+import uuid
+
+import os.path
 
 
 def test(request):
@@ -17,7 +20,9 @@ def test(request):
 
     filters = Filter.objects.filter()
 
-    return render(request, 'abtesting/test.html', {"filters": filters, "server": server})
+    session_key = uuid.uuid4()
+
+    return render(request, 'abtesting/jQuery File Upload Demo.html', {"filters": filters, "server": server, "session_key": session_key})
 
 
 def ab_tests(request):
@@ -128,3 +133,32 @@ def save_test(request):
         result = r.text
 
     return render(request, 'abtesting/test.html', {"filters": filters, 'result': result, "server": server})
+
+
+def save_file(request):
+    if not request.user.is_authenticated():
+        return redirect('/login')
+
+    if request.method != "POST":
+        return redirect('/test')
+
+    files = request.FILES.getlist("configs_js")
+
+    session_key = request.GET["session_key"]
+    SITE_ROOT = os.path.dirname(os.path.realpath(__file__))
+
+    if os.path.isdir(SITE_ROOT + "/" + session_key):
+        return render(request, 'abtesting/test.html')
+
+    os.makedirs(SITE_ROOT + "/" + session_key)
+
+    for file in files:
+        f = open(SITE_ROOT + "/" + session_key + file.name, "wb")
+        f.write(file.read())
+        f.close()
+
+    print(SITE_ROOT)
+    print(files[0])
+    print()
+
+    return render(request, 'abtesting/test.html')
