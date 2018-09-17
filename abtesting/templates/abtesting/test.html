@@ -1,5 +1,3 @@
-
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -7,10 +5,11 @@
     <title>AB Testing</title>
     {% load static %}
 
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.0/jquery.min.js"></script>
     <script src="{% static 'calendar/dist/js/datepicker.min.js' %}"></script>
-
     <link href="{% static 'calendar/dist/css/datepicker.min.css' %}" rel="stylesheet" type="text/css">
+
+    <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css" rel="stylesheet"/>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
 
     <script>
         {% for filter in filters %}
@@ -29,9 +28,71 @@
         {% endfor %}
     </script>
     <style>
-        .bar {
-            height: 18px;
-            background: green;
+        #drop-zone {
+            width: 100%;
+            min-height: 150px;
+            border: 3px dashed rgba(0, 0, 0, .3);
+            border-radius: 5px;
+            font-family: Arial;
+            text-align: center;
+            position: relative;
+            font-size: 20px;
+            color: #7E7E7E;
+        }
+
+        #drop-zone input {
+            position: absolute;
+            cursor: pointer;
+            left: 0px;
+            top: 0px;
+            opacity: 0;
+        }
+
+        /*Important*/
+
+        #drop-zone.mouse-over {
+            border: 3px dashed rgba(0, 0, 0, .3);
+            color: #7E7E7E;
+        }
+
+        /*If you dont want the button*/
+
+        #clickHere {
+            display: inline-block;
+            cursor: pointer;
+            color: white;
+            font-size: 17px;
+            width: 150px;
+            border-radius: 4px;
+            background-color: #4679BD;
+            padding: 10px;
+        }
+
+        #clickHere:hover {
+            background-color: #376199;
+        }
+
+        #filename {
+            margin-top: 10px;
+            margin-bottom: 10px;
+            font-size: 14px;
+            line-height: 1.5em;
+        }
+
+        .file-preview {
+            background: #ccc;
+            border: 5px solid #fff;
+            box-shadow: 0 0 4px rgba(0, 0, 0, 0.5);
+            display: inline-block;
+            width: 60px;
+            height: 60px;
+            text-align: center;
+            font-size: 14px;
+            margin-top: 5px;
+        }
+
+        .closeBtn:hover {
+            color: red;
         }
     </style>
 </head>
@@ -47,7 +108,7 @@
 
 <h2><a href="/"> < RETURN </a></h2>
 
-<form id="testing_data" method="post" action="/save/" enctype="multipart/form-data">{% csrf_token %}
+<form id="fileupload" method="post" action="/save/" enctype="multipart/form-data">{% csrf_token %}
 
     <label for="testing_name">Название теста (for appmetrica):</label><br>
     <input id="testing_name" type="text" name="testing_name" value="test name"/><br><br>
@@ -120,12 +181,93 @@
 
     <br>
     <br>
+    <div id="drop-zone">
+        <p>Drop files here...</p>
+        <div id="clickHere">or click here.. <i class="fa fa-upload"></i>
+            <input type="file" name="file" id="file" multiple/>
+        </div>
+        <div id='filename'></div>
+    </div>
+    <br>
     <button type="submit" onclick="return confirm('Are you sure?')">Сохранить</button>
-
-
 </form>
-{% block content %}
 
-{% endblock %}
 </body>
+
+
+<script>
+    $(function () {
+        const dropZoneId = "drop-zone";
+        const buttonId = "clickHere";
+        const mouseOverClass = "mouse-over";
+
+        var dropZone = $("#" + dropZoneId);
+        var ooleft = dropZone.offset().left;
+        var ooright = dropZone.outerWidth() + ooleft;
+        var ootop = dropZone.offset().top;
+        var oobottom = dropZone.outerHeight() + ootop;
+        var inputFile = dropZone.find("input");
+        document.getElementById(dropZoneId).addEventListener("dragover", function (e) {
+            e.preventDefault();
+            e.stopPropagation();
+            dropZone.addClass(mouseOverClass);
+            var x = e.pageX;
+            var y = e.pageY;
+
+            if (!(x < ooleft || x > ooright || y < ootop || y > oobottom)) {
+                inputFile.offset({
+                    top: y - 15,
+                    left: x - 100
+                });
+            } else {
+                inputFile.offset({
+                    top: -400,
+                    left: -400
+                });
+            }
+
+        }, true);
+
+        if (buttonId != "") {
+            var clickZone = $("#" + buttonId);
+
+            var oleft = clickZone.offset().left;
+            var oright = clickZone.outerWidth() + oleft;
+            var otop = clickZone.offset().top;
+            var obottom = clickZone.outerHeight() + otop;
+
+            $("#" + buttonId).mousemove(function (e) {
+                var x = e.pageX;
+                var y = e.pageY;
+                if (!(x < oleft || x > oright || y < otop || y > obottom)) {
+                    inputFile.offset({
+                        top: y - 15,
+                        left: x - 160
+                    });
+                } else {
+                    inputFile.offset({
+                        top: -400,
+                        left: -400
+                    });
+                }
+            });
+        }
+
+        document.getElementById(dropZoneId).addEventListener("drop", function (e) {
+            $("#" + dropZoneId).removeClass(mouseOverClass);
+        }, true);
+
+        inputFile.on('change', function (e) {
+            $('#filename').html("");
+            var fileNum = this.files.length,
+                initial = 0,
+                counter = 0;
+            for (initial; initial < fileNum; initial++) {
+                counter = counter + 1;
+                $('#filename').append('<span class="fa-stack fa-lg"><i class="fa fa-file fa-stack-1x "></i><strong class="fa-stack-1x" style="color:#FFF; font-size:12px; margin-top:2px;">' + counter + '</strong></span> ' + this.files[initial].name + '&nbsp;&nbsp;<span class="fa fa-times-circle fa-lg closeBtn" title="remove"></span><br>');
+            }
+        });
+
+    })
+</script>
 </html>

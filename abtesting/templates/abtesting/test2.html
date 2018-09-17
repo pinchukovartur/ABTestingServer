@@ -1,0 +1,327 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>AB Testing</title>
+
+    <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css" rel="stylesheet"/>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
+
+    {% load static %}
+    <script src="{% static 'calendar/dist/js/datepicker.min.js' %}"></script>
+    <link href="{% static 'calendar/dist/css/datepicker.min.css' %}" rel="stylesheet" type="text/css">
+
+
+</head>
+
+<style>
+    #drop-zone {
+        width: 100%;
+        min-height: 150px;
+        border: 3px dashed rgba(0, 0, 0, .3);
+        border-radius: 5px;
+        font-family: Arial;
+        text-align: center;
+        position: relative;
+        font-size: 20px;
+        color: #7E7E7E;
+    }
+
+    #drop-zone input {
+        position: absolute;
+        cursor: pointer;
+        left: 0px;
+        top: 0px;
+        opacity: 0;
+    }
+
+    /*Important*/
+
+    #drop-zone.mouse-over {
+        border: 3px dashed rgba(0, 0, 0, .3);
+        color: #7E7E7E;
+    }
+
+    /*If you dont want the button*/
+
+    #clickHere {
+        display: inline-block;
+        cursor: pointer;
+        color: white;
+        font-size: 17px;
+        width: 150px;
+        border-radius: 4px;
+        background-color: #4679BD;
+        padding: 10px;
+    }
+
+    #clickHere:hover {
+        background-color: #376199;
+    }
+
+    #filename {
+        margin-top: 10px;
+        margin-bottom: 10px;
+        font-size: 14px;
+        line-height: 1.5em;
+    }
+
+    .file-preview {
+        background: #ccc;
+        border: 5px solid #fff;
+        box-shadow: 0 0 4px rgba(0, 0, 0, 0.5);
+        display: inline-block;
+        width: 60px;
+        height: 60px;
+        text-align: center;
+        font-size: 14px;
+        margin-top: 5px;
+    }
+
+    .closeBtn:hover {
+        color: red;
+    }
+
+</style>
+
+<body>
+
+<form id="fileupload" method="post" action="/save/" enctype="multipart/form-data">{% csrf_token %}
+
+    label for="testing_name">Название теста (for appmetrica):</label><br>
+    <input id="testing_name" type="text" name="testing_name" value="test name"/><br><br>
+
+    <label for="testing_probability">Вероятность:</label><br>
+    <input id="testing_probability" type="number" name="testing_probability" value="100"/><br><br>
+
+    <label for="testing_user_count">Кол-во пользователей учавствующих в тестировании:</label><br>
+    <input id="testing_user_count" type="number" name="testing_user_count" value="100"/><br><br>
+
+    {% for filter in filters %}
+        <div style="background-color: aliceblue">
+
+            <label>
+                Is On:
+                <input type="checkbox" name="{{ filter.name }}_is_on" value="on"><br>
+            </label>
+
+
+            <label for="{{ filter.name }}">{{ filter.description }}</label><br>
+            {% if filter.type == "BOOL" %}
+                <select id="{{ filter.name }}" name="{{ filter.name }}" form="testing_data">
+                    <option value="0">FLASE</option>
+                    <option value="1">TRUE</option>
+                </select>
+            {% elif  filter.type == "DATE" %}
+                <input id="{{ filter.name }}" type="text" name="" value="" class="datepicker-here"
+                       data-timepicker="true" autocomplete="off"/>
+                <input id="{{ filter.name }}_value_UNIX" type="hidden" name="{{ filter.name }}" value=""/>
+            {% else %}
+                <input id="{{ filter.name }}" type="text" name="{{ filter.name }}" value=""/>
+            {% endif %}
+
+
+            <label for="{{ filter.name }}_type">Тип:</label>
+            <select id="{{ filter.name }}_type" name="{{ filter.name }}_type" form="testing_data">
+                {% if filter.type == "INT" or filter.type == "FLOAT" or filter.type == "DATE" %}
+                    <option value="<"><</option>
+                    <option value=">">></option>
+                {% endif %}
+                <option value="!=">!=</option>
+                <option value="==">==</option>
+            </select>
+
+            {% if filter.type == "DATE" %}
+                <input type="hidden" name="{{ filter.name }}_data_type" value="INT">
+            {% else %}
+                <input type="hidden" name="{{ filter.name }}_data_type" value="{{ filter.type }}">
+            {% endif %}
+
+
+
+            <br>
+        </div>
+        <br><br>
+
+    {% endfor %}
+    {% comment %}<br>
+            <label for="configs">Configs:</label><br>
+            <input id="configs" type="file" name="configs" multiple accept=".json,.csv">
+            <br>
+            <br>{% endcomment %}
+
+    <input type="hidden" name="server" value="{{ server }}">
+
+    <div id="drop-zone">
+        <p>Drop files here...</p>
+        <div id="clickHere">or click here.. <i class="fa fa-upload"></i>
+            <label for="file">Levels:</label><br>
+            <input type="file" name="levels" id="file" multiple/>
+        </div>
+        <div id='filename'></div>
+    </div>
+    <br>
+    <label for="skipFiles"></label><input type="hidden" name="skipFiles" value="" id="skipFiles"/>
+    <button type="submit" onclick="return confirm('Are you sure?')">Сохранить</button>
+</form>
+
+
+</body>
+
+<script>
+    var dropZoneId = "drop-zone";
+    var buttonId = "clickHere";
+    var mouseOverClass = "mouse-over";
+
+    var dropZone = $("#" + dropZoneId);
+    var ooleft = dropZone.offset().left;
+    var ooright = dropZone.outerWidth() + ooleft;
+    var ootop = dropZone.offset().top;
+    var oobottom = dropZone.outerHeight() + ootop;
+    var inputFile = dropZone.find("input");
+
+    var filesArr = [];
+    var filesSkip = [];
+    var finalFiles = [];
+    var finalFilesNames = [];
+
+    function showFiles() {
+        $('#filename').html("");
+        var fileNum = filesArr.length;
+        for (var i = 0; i < fileNum; i++) {
+
+            objectURL = URL.createObjectURL(filesArr[i]);
+
+            $('#filename').append('<div><img title="' + filesArr[i].name + '" id="' + objectURL + '" src="' + objectURL + '" class="pre-visualizacao"><span class="fa-stack fa-lg"><i class="fa fa-file fa-stack-1x "></i><strong class="fa-stack-1x" style="color:#FFF; font-size:12px; margin-top:2px;">' + i + '</strong></span> ' + filesArr[i].name + '&nbsp;&nbsp;<span class="closeBtn" title="Remover">X</span></div>');
+
+        }
+    }
+
+    function addFiles(e) {
+        var tmp;
+
+        // transfer dropped content to temporary array
+        if (e.dataTransfer) {
+            tmp = e.dataTransfer.files;
+        } else if (e.target) {
+            tmp = e.target.files;
+        }
+
+        // Copy the file items into the array
+        for (var i = 0; i < tmp.length; i++) {
+            filesArr.push(tmp.item(i));
+            //console.log(i);
+        }
+
+        // remove all contents from the input elemnent (reset it)
+        inputFile.wrap('<form>').closest('form').get(0).reset();
+        inputFile.unwrap();
+
+        showFiles();
+    }
+
+
+    $(function () {
+        document.getElementById(dropZoneId).addEventListener("dragover", function (e) {
+            e.preventDefault();
+            e.stopPropagation();
+            dropZone.addClass(mouseOverClass);
+            var x = e.pageX;
+            var y = e.pageY;
+
+            if (!(x < ooleft || x > ooright || y < ootop || y > oobottom)) {
+                inputFile.offset({
+                    top: y - 15,
+                    left: x - 100
+                });
+            } else {
+                inputFile.offset({
+                    top: -400,
+                    left: -400
+                });
+            }
+
+        }, true);
+
+        if (buttonId != "") {
+            var clickZone = $("#" + buttonId);
+
+            var oleft = clickZone.offset().left;
+            var oright = clickZone.outerWidth() + oleft;
+            var otop = clickZone.offset().top;
+            var obottom = clickZone.outerHeight() + otop;
+
+            $("#" + buttonId).mousemove(function (e) {
+                var x = e.pageX;
+                var y = e.pageY;
+                if (!(x < oleft || x > oright || y < otop || y > obottom)) {
+                    inputFile.offset({
+                        top: y - 15,
+                        left: x - 160
+                    });
+                } else {
+                    inputFile.offset({
+                        top: -400,
+                        left: -400
+                    });
+                }
+            });
+        }
+
+        document.getElementById(dropZoneId).addEventListener("drop", function (e) {
+            $("#" + dropZoneId).removeClass(mouseOverClass);
+            addFiles(e);
+        }, true);
+
+        $('#filename').on('click', '.closeBtn', function (e) {
+            e.preventDefault();
+            e.stopPropagation();
+            var divElem = $(this).parent();
+            var index = $('#filename').find('div').index(divElem);
+            if (index !== -1) {
+                $('#filename')[0].removeChild(divElem[0]);
+                filesArr.slice(index, 1);
+                filesSkip.push(finalFilesNames[index]);
+            }
+            document.getElementById("skipFiles").value = JSON.stringify(filesSkip);
+        });
+
+        inputFile.on('change', function (e) {
+            $('#filename').html("");
+            var fileNum = this.files.length,
+                initial = 0,
+                counter = 0;
+            for (initial; initial < fileNum; initial++) {
+                counter = counter + 1;
+                objectURL = URL.createObjectURL(this.files[initial]);
+                $('#filename').append('<div><img title="' + this.files[initial].name + '" id="' + objectURL + '" src="' + objectURL + '" class="pre-visualizacao"><span class="fa-stack fa-lg"><i class="fa fa-file fa-stack-1x "></i><strong class="fa-stack-1x" style="color:#FFF; font-size:12px; margin-top:2px;">' + counter + '</strong></span> ' + this.files[initial].name + '&nbsp;&nbsp;<span class="closeBtn" title="Remover">X</span></div>');
+            }
+        });
+
+        inputFile.on('change', function (e) {
+            finalFiles = {};
+            finalFilesNames = {};
+            filesSkip = [];
+            $('#filename').html("");
+            var fileNum = this.files.length,
+                initial = 0,
+                counter = 0;
+
+            $.each(this.files, function (idx, elm) {
+                finalFilesNames[idx] = elm.name;
+                finalFiles[idx] = elm;
+            });
+
+            for (initial; initial < fileNum; initial++) {
+                counter = counter + 1;
+               $('#filename').append('<div><span class="fa-stack fa-lg"><i class="fa fa-file fa-stack-1x "></i><strong class="fa-stack-1x" style="color:#FFF; font-size:12px; margin-top:2px;">'+ counter + '</strong></span> ' + this.files[initial].name + '&nbsp;&nbsp;<span class="closeBtn" title="Remover">X</span></div>');
+            }
+
+            document.getElementById("skipFiles").value = JSON.stringify(filesSkip);
+        });
+
+
+    })
+
+</script>
+</html>

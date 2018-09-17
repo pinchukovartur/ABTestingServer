@@ -2,6 +2,12 @@ from django.shortcuts import render, redirect
 from abtesting.models import Filter
 from abtesting.consts import prod_server, dev_server
 
+from django.shortcuts import render_to_response, get_object_or_404
+from django.conf import settings
+from django.http import HttpResponse, HttpResponseBadRequest
+from django.core.files.uploadedfile import UploadedFile
+from django.template import RequestContext
+
 import json
 import requests
 import time
@@ -22,7 +28,8 @@ def test(request):
 
     session_key = uuid.uuid4()
 
-    return render(request, 'abtesting/jQuery File Upload Demo.html', {"filters": filters, "server": server, "session_key": session_key})
+    return render(request, 'abtesting/test2.html',
+                  {"filters": filters, "server": server, "session_key": session_key})
 
 
 def ab_tests(request):
@@ -64,6 +71,19 @@ def set_ab_status(request):
 
 
 def save_test(request):
+    if request.method == 'POST':
+        if request.FILES is None:
+            return HttpResponseBadRequest('Must have files attached!')
+
+        #file = request.FILES[u'files[]']
+
+        print("-----------")
+        print(request.FILES)
+        print("+++++++++++")
+        #print(len(file))
+
+        return render(request, 'abtesting/test.html')
+
     if not request.user.is_authenticated():
         return redirect('/login')
 
@@ -133,32 +153,3 @@ def save_test(request):
         result = r.text
 
     return render(request, 'abtesting/test.html', {"filters": filters, 'result': result, "server": server})
-
-
-def save_file(request):
-    if not request.user.is_authenticated():
-        return redirect('/login')
-
-    if request.method != "POST":
-        return redirect('/test')
-
-    files = request.FILES.getlist("configs_js")
-
-    session_key = request.GET["session_key"]
-    SITE_ROOT = os.path.dirname(os.path.realpath(__file__))
-
-    if os.path.isdir(SITE_ROOT + "/" + session_key):
-        return render(request, 'abtesting/test.html')
-
-    os.makedirs(SITE_ROOT + "/" + session_key)
-
-    for file in files:
-        f = open(SITE_ROOT + "/" + session_key + file.name, "wb")
-        f.write(file.read())
-        f.close()
-
-    print(SITE_ROOT)
-    print(files[0])
-    print()
-
-    return render(request, 'abtesting/test.html')
