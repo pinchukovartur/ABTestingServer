@@ -71,19 +71,6 @@ def set_ab_status(request):
 
 
 def save_test(request):
-    if request.method == 'POST':
-        if request.FILES is None:
-            return HttpResponseBadRequest('Must have files attached!')
-
-        #file = request.FILES[u'files[]']
-
-        print("-----------")
-        print(request.FILES)
-        print("+++++++++++")
-        #print(len(file))
-
-        return render(request, 'abtesting/test.html')
-
     if not request.user.is_authenticated():
         return redirect('/login')
 
@@ -130,7 +117,6 @@ def save_test(request):
         filter_data_type = request.POST[filter.name + "_data_type"]
 
         if filter.name + "_is_on" in request.POST.keys():
-            print(filter_value, filter_type, filter_data_type)
             filters_dict[filter.name] = {"filter_value": filter_value, "filter_type": filter_type,
                                          "filter_data_type": filter_data_type}
 
@@ -139,17 +125,25 @@ def save_test(request):
             "user_count": testing_user_count, "filters": filters_json}
 
     files = list()
+    load_levels = list()
+    if "loadLevelsFiles" in request.POST.keys():
+        load_levels = json.loads(request.POST["loadLevelsFiles"])
+        print(load_levels)
+        print(type(load_levels))
     for level in levels:
-        files.append(("levels", level))
-
+        if level.name in load_levels:
+            files.append(("levels", level))
+    print(files)
     for config in configs:
         files.append(("configs", config))
 
     if server == "prod":
-        r = requests.post(prod_server + "save_test?key=6b7b1a88b2aa45eb9f861d9c86e67696", files=files, data=data)
-        result = r.text
+        pass
+        #r = requests.post(prod_server + "save_test?key=6b7b1a88b2aa45eb9f861d9c86e67696", files=files, data=data)
+        #result = r.text
     elif server == "dev":
-        r = requests.post(dev_server + "save_test?key=6b7b1a88b2aa45eb9f861d9c86e67696", files=files, data=data)
-        result = r.text
+        pass
+        #r = requests.post(dev_server + "save_test?key=6b7b1a88b2aa45eb9f861d9c86e67696", files=files, data=data)
+        #result = r.text
 
-    return render(request, 'abtesting/test.html', {"filters": filters, 'result': result, "server": server})
+    return render(request, 'abtesting/test2.html', {"filters": filters, 'result': result, "server": server})
