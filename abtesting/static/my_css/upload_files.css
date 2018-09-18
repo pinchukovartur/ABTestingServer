@@ -18,6 +18,26 @@
     opacity: 0;
 }
 
+#drop-zone2 {
+    width: 100%;
+    min-height: 150px;
+    border: 3px dashed rgba(0, 0, 0, .3);
+    border-radius: 5px;
+    font-family: Arial;
+    text-align: center;
+    position: relative;
+    font-size: 20px;
+    color: #7E7E7E;
+}
+
+#drop-zone2 input {
+    position: absolute;
+    cursor: pointer;
+    left: 0px;
+    top: 0px;
+    opacity: 0;
+}
+
 /*Important*/
 
 #drop-zone.mouse-over {
@@ -39,6 +59,21 @@
 }
 
 #clickHere:hover {
+    background-color: #376199;
+}
+
+#clickHere2 {
+    display: inline-block;
+    cursor: pointer;
+    color: white;
+    font-size: 17px;
+    width: 150px;
+    border-radius: 4px;
+    background-color: #4679BD;
+    padding: 10px;
+}
+
+#clickHere2:hover {
     background-color: #376199;
 }
 

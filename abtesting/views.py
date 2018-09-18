@@ -108,7 +108,7 @@ def save_test(request):
             result += filter.name + " can't be null;\n"
 
     if result:
-        return render(request, 'abtesting/test.html', {"filters": filters, 'result': result})
+        return render(request, 'abtesting/test2.html', {"filters": filters, 'result': result})
 
     filters_dict = dict()
     for filter in filters:
@@ -128,22 +128,28 @@ def save_test(request):
     load_levels = list()
     if "loadLevelsFiles" in request.POST.keys():
         load_levels = json.loads(request.POST["loadLevelsFiles"])
-        print(load_levels)
-        print(type(load_levels))
+
     for level in levels:
         if level.name in load_levels:
             files.append(("levels", level))
-    print(files)
+
+    load_configs = list()
+    if "loadConfigsFiles" in request.POST.keys():
+        load_configs = json.loads(request.POST["loadConfigsFiles"])
+
     for config in configs:
-        files.append(("configs", config))
+        if config.name in load_configs:
+            files.append(("configs", config))
+
+    print(files)
 
     if server == "prod":
         pass
-        #r = requests.post(prod_server + "save_test?key=6b7b1a88b2aa45eb9f861d9c86e67696", files=files, data=data)
-        #result = r.text
+        r = requests.post(prod_server + "save_test?key=6b7b1a88b2aa45eb9f861d9c86e67696", files=files, data=data)
+        result = r.text
     elif server == "dev":
         pass
-        #r = requests.post(dev_server + "save_test?key=6b7b1a88b2aa45eb9f861d9c86e67696", files=files, data=data)
-        #result = r.text
+        r = requests.post(dev_server + "save_test?key=6b7b1a88b2aa45eb9f861d9c86e67696", files=files, data=data)
+        result = r.text
 
     return render(request, 'abtesting/test2.html', {"filters": filters, 'result': result, "server": server})

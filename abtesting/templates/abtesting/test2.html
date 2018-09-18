@@ -83,24 +83,42 @@
         <br><br>
 
     {% endfor %}
+
+
+    <div id="drop-zone2">
+        <p>Drop Configs Files Here...</p>
+        <div id="clickHere2">or click here.. <i class="fa fa-upload"></i>
+            <label for="configs">Configs:</label><br>
+            <input type="file" name="configs" id="configs" multiple/>
+        </div>
+        <div id='fileNameConfigs'></div>
+    </div>
+
     {% comment %}<br>
             <label for="configs">Configs:</label><br>
             <input id="configs" type="file" name="configs" multiple accept=".json,.csv">
             <br>
             <br>{% endcomment %}
+<br>
+<br>
+<br>
 
     <input type="hidden" name="server" value="{{ server }}">
 
     <div id="drop-zone">
-        <p>Drop files here...</p>
+        <p>Drop Levels Files Here...</p>
         <div id="clickHere">or click here.. <i class="fa fa-upload"></i>
-            <label for="file">Levels:</label><br>
-            <input type="file" name="levels" id="file" multiple/>
+            <br>
+            <label for="levels">Levels:</label><br>
+            <input type="file" name="levels" id="levels" multiple/>
         </div>
-        <div id='filename'></div>
+        <div id='fileNameLevels'></div>
     </div>
     <br>
-    <label for="loadLevelsFiles"></label><input type="hidden" name="loadLevelsFiles" value="" id="loadLevelsFiles"/>
+
+    <label for="loadLevelsFiles"></label><input type="hidden" name="loadLevelsFiles" value="[]" id="loadLevelsFiles"/>
+    <label for="loadConfigsFiles"></label><input type="hidden" name="loadConfigsFiles" value="[]" id="loadConfigsFiles"/>
+
     <button type="submit" onclick="return confirm('Are you sure?')">Сохранить</button>
 </form>
 
@@ -110,12 +128,12 @@
 <script src="{% static 'my_js/upload_files.js' %}"></script>
 
 <script>
+    UploadFiles("drop-zone", "clickHere", "mouse-over", "loadLevelsFiles", "fileNameLevels");
+    UploadFiles("drop-zone2", "clickHere2", "mouse-over", "loadConfigsFiles", "fileNameConfigs");
 
-    var dropZoneId = "drop-zone";
-    var buttonId = "clickHere";
-    var mouseOverClass = "mouse-over";
-    var skipFiles = "loadLevelsFiles";
-    UploadFiles(dropZoneId, buttonId, mouseOverClass, skipFiles);
+ {% comment %}   var dropZoneId2 = "drop-zone2";
+    var buttonId2 = "clickHere2";
+    UploadFiles(dropZoneId2, buttonId2, mouseOverClass, skipFiles, "filename2");{% endcomment %}
 
 </script>
 </html>

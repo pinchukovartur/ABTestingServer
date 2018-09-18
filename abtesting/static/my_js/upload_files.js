@@ -3,7 +3,7 @@
  */
 
 
-function UploadFiles(dropZoneId, buttonId, mouseOverClass, skipFiles) {
+function UploadFiles(dropZoneId, buttonId, mouseOverClass, skipFiles, fileContaner) {
     var dropZone = $("#" + dropZoneId);
     var ooleft = dropZone.offset().left;
     var ooright = dropZone.outerWidth() + ooleft;
@@ -16,13 +16,13 @@ function UploadFiles(dropZoneId, buttonId, mouseOverClass, skipFiles) {
     var finalFiles = [];
 
     function showFiles() {
-        $('#filename').html("");
+        $('#' + fileContaner).html("");
         var fileNum = filesArr.length;
         for (var i = 0; i < fileNum; i++) {
 
             objectURL = URL.createObjectURL(filesArr[i]);
 
-            $('#filename').append('<div><img title="' + filesArr[i].name + '" id="' + objectURL + '" src="' + objectURL + '" class="pre-visualizacao"><span class="fa-stack fa-lg"><i class="fa fa-file fa-stack-1x "></i><strong class="fa-stack-1x" style="color:#FFF; font-size:12px; margin-top:2px;">' + i + '</strong></span> ' + filesArr[i].name + '&nbsp;&nbsp;<span class="closeBtn" title="Remover">X</span></div>');
+            $('#' + fileContaner).append('<div><img title="' + filesArr[i].name + '" id="' + objectURL + '" src="' + objectURL + '" class="pre-visualizacao"><span class="fa-stack fa-lg"><i class="fa fa-file fa-stack-1x "></i><strong class="fa-stack-1x" style="color:#FFF; font-size:12px; margin-top:2px;">' + i + '</strong></span> ' + filesArr[i].name + '&nbsp;&nbsp;<span class="closeBtn" title="Remover">X</span></div>');
 
         }
     }
@@ -103,13 +103,13 @@ function UploadFiles(dropZoneId, buttonId, mouseOverClass, skipFiles) {
             addFiles(e);
         }, true);
 
-        $('#filename').on('click', '.closeBtn', function (e) {
+        $('#' + fileContaner).on('click', '.closeBtn', function (e) {
             e.preventDefault();
             e.stopPropagation();
             var divElem = $(this).parent();
-            var index = $('#filename').find('div').index(divElem);
+            var index = $('#' + fileContaner).find('div').index(divElem);
             if (index !== -1) {
-                $('#filename')[0].removeChild(divElem[0]);
+                $('#' + fileContaner)[0].removeChild(divElem[0]);
                 filesArr.slice(index, 1);
                 fileLoads.splice(fileLoads.indexOf(this.id), 1);
             }
@@ -118,21 +118,21 @@ function UploadFiles(dropZoneId, buttonId, mouseOverClass, skipFiles) {
         });
 
         inputFile.on('change', function (e) {
-            $('#filename').html("");
+            $('#' + fileContaner).html("");
             var fileNum = this.files.length,
                 initial = 0,
                 counter = 0;
             for (initial; initial < fileNum; initial++) {
                 counter = counter + 1;
                 objectURL = URL.createObjectURL(this.files[initial]);
-                $('#filename').append('<div><img title="' + this.files[initial].name + '" id="' + objectURL + '" src="' + objectURL + '" class="pre-visualizacao"><span class="fa-stack fa-lg"><i class="fa fa-file fa-stack-1x "></i><strong class="fa-stack-1x" style="color:#FFF; font-size:12px; margin-top:2px;">' + counter + '</strong></span> ' + this.files[initial].name + '&nbsp;&nbsp;<span class="closeBtn" title="Remover">X</span></div>');
+                $('#' + fileContaner).append('<div><img title="' + this.files[initial].name + '" id="' + objectURL + '" src="' + objectURL + '" class="pre-visualizacao"><span class="fa-stack fa-lg"><i class="fa fa-file fa-stack-1x "></i><strong class="fa-stack-1x" style="color:#FFF; font-size:12px; margin-top:2px;">' + counter + '</strong></span> ' + this.files[initial].name + '&nbsp;&nbsp;<span class="closeBtn" title="Remover">X</span></div>');
             }
         });
 
         inputFile.on('change', function (e) {
             finalFiles = {};
             fileLoads = [];
-            $('#filename').html("");
+            $('#' + fileContaner).html("");
             var fileNum = this.files.length,
                 initial = 0,
                 counter = 0;
@@ -145,7 +145,7 @@ function UploadFiles(dropZoneId, buttonId, mouseOverClass, skipFiles) {
 
             for (initial; initial < fileNum; initial++) {
                 counter = counter + 1;
-                $('#filename').append('<div><span class="fa-stack fa-lg"><i class="fa fa-file fa-stack-1x "></i><strong class="fa-stack-1x" style="color:#FFF; font-size:12px; margin-top:2px;">' + counter + '</strong></span> ' + this.files[initial].name + '&nbsp;&nbsp;<span class="closeBtn" title="Remover" id="'+ this.files[initial].name +'">X</span></div>');
+                $('#' + fileContaner).append('<div><span class="fa-stack fa-lg"><i class="fa fa-file fa-stack-1x "></i><strong class="fa-stack-1x" style="color:#FFF; font-size:12px; margin-top:2px;">' + counter + '</strong></span> ' + this.files[initial].name + '&nbsp;&nbsp;<span class="closeBtn" title="Remover" id="'+ this.files[initial].name +'">X</span></div>');
             }
 
             document.getElementById(skipFiles).value = JSON.stringify(fileLoads);
