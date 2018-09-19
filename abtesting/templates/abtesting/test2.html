@@ -126,7 +126,22 @@
 </body>
 
 <script src="{% static 'my_js/upload_files.js' %}"></script>
+<script>
+        {% for filter in filters %}
 
+            {% if filter.type == "DATE" %}
+
+                $(document).ready(function () {
+                    $('#{{ filter.name }}').datepicker({
+                        onSelect: function (formattedDate, date, inst) {
+                            console.log(date.getTime() / 1000);
+                            $("#{{ filter.name }}_value_UNIX").val((date.getTime() / 1000));
+                        }
+                    })
+                });
+            {% endif %}
+        {% endfor %}
+    </script>
 <script>
     UploadFiles("drop-zone", "clickHere", "mouse-over", "loadLevelsFiles", "fileNameLevels");
     UploadFiles("drop-zone2", "clickHere2", "mouse-over", "loadConfigsFiles", "fileNameConfigs");
